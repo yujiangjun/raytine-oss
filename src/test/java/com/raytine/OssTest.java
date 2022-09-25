@@ -1,11 +1,12 @@
 package com.raytine;
 
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.errors.MinioException;
+import com.raytine.config.MinioConfigProperties;
+import io.minio.*;
+import io.minio.errors.*;
+import io.minio.http.Method;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.FileInputStream;
@@ -14,6 +15,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @SpringBootTest
+@Ignore
 public class OssTest {
     @Test
     public void test01() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
@@ -56,5 +58,37 @@ public class OssTest {
             }
 
 
+    }
+
+    @Autowired
+    MinioClient minioClient;
+    @Autowired
+    MinioConfigProperties minioConfigProperties;
+
+    @Test
+    public void test02() throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        GetObjectResponse object = minioClient.getObject(GetObjectArgs
+                .builder()
+                        .bucket(minioConfigProperties.getBucketName())
+                        .object("3.k8s-work-node安装说明.md")
+                .build());
+        String presignedObjectUrl = minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs
+                .builder()
+                .bucket(minioConfigProperties.getBucketName())
+                .object("头像 男孩.png")
+                        .method(Method.GET)
+                .build());
+        System.out.println(presignedObjectUrl);
+        System.out.println(object.bucket());
+        System.out.println(object.object());
+    }
+
+    @Test
+    public void test03() throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        minioClient.downloadObject(DownloadObjectArgs.builder()
+                .bucket(minioConfigProperties.getBucketName())
+                .object("3.k8s-work-node安装说明.md")
+                .filename("3.k8s-work-node安装说明.md")
+                .build());
     }
 }

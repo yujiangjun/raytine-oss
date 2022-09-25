@@ -2,13 +2,13 @@ package com.raytine.service.impl;
 
 import com.raytine.config.MinioConfigProperties;
 import com.raytine.service.MinioService;
-import io.minio.BucketExistsArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import io.minio.errors.MinioException;
+import io.minio.*;
+import io.minio.errors.*;
+import io.minio.http.Method;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -25,9 +25,9 @@ public class MinioServiceImpl implements MinioService {
     }
 
     @Override
-    public void update(MultipartFile file) throws MinioException, IOException, NoSuchAlgorithmException, InvalidKeyException {
+    public String update(MultipartFile file) throws MinioException, IOException, NoSuchAlgorithmException, InvalidKeyException {
 
-        boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket("raytine-im").build());
+        boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioConfigProperties.getBucketName()).build());
         if (!found) {
             throw new MinioException("bucket 不存在");
         }
@@ -37,6 +37,23 @@ public class MinioServiceImpl implements MinioService {
                 .object(file.getOriginalFilename())
                 .stream(stream,file.getSize(),0)
                 .contentType("application/octet-stream")
+                .build());
+        stream.close();
+
+        return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs
+                .builder()
+                .bucket(minioConfigProperties.getBucketName())
+                .object("头像 男孩.png")
+                .method(Method.GET)
+                .build());
+    }
+
+    @Override
+    public void download(String fileName, HttpServletResponse response) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        minioClient.downloadObject(DownloadObjectArgs.builder()
+                        .bucket(minioConfigProperties.getBucketName())
+                        .object(fileName)
+                        .filename(fileName)
                 .build());
     }
 }
