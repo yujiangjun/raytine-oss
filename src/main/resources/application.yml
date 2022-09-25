@@ -1,0 +1,12 @@
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 500MB
+      max-request-size: 500MB
+      file-size-threshold: 500MB
+minio:
+  endPoint: http://8.134.34.84:9090
+  accessKey: VE8XCF0A2ALLO8AYYS37
+  secretKey: 4sHvo04dLlt6sANKYDKGzJ8w5PHHeQgfmxbKo+Hp
+  bucketName: raytine-im
