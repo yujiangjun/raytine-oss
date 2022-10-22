@@ -4,7 +4,6 @@ import com.raytine.config.MinioConfigProperties;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +14,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 @SpringBootTest
-@Ignore
 public class OssTest {
     @Test
     public void test01() throws IOException, NoSuchAlgorithmException, InvalidKeyException {

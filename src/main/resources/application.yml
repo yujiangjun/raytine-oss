@@ -6,7 +6,7 @@ spring:
       max-request-size: 500MB
       file-size-threshold: 500MB
 minio:
-  endPoint: http://192.168.180.65:9090
+  endPoint: http://localhost:9000
   accessKey: 1ORCKTU353XV5UPMKEU0
   secretKey: VfA+30q3EW7ObQVksEFrGyhrELdfqwFbHk5aIu2S
   bucketName: raytine-im

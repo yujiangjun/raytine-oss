@@ -43,7 +43,7 @@ public class MinioServiceImpl implements MinioService {
         return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs
                 .builder()
                 .bucket(minioConfigProperties.getBucketName())
-                .object("头像 男孩.png")
+                .object(file.getOriginalFilename())
                 .method(Method.GET)
                 .build());
     }
