@@ -1,5 +1,5 @@
 # 基于java镜像创建新镜像
-FROM adoptopenjdk/openjdk8
+FROM khipu/openjdk17-alpine
 # 作者
 MAINTAINER yujiangjun
 # 将jar包添加到容器中并更名为app.jar
