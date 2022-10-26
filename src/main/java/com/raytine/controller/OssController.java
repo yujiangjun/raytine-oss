@@ -29,6 +29,10 @@ public class OssController extends BaseController{
         return success(minioService.update(file));
     }
 
+    @GetMapping("/getUrl")
+    public Resp<String> getUrlList(String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        return success(minioService.getUrl(fileName));
+    }
     @GetMapping("/download")
     public Resp<Void> download(String fileName, HttpServletResponse response) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
         minioService.download(fileName,response);

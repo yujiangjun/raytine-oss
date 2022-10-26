@@ -6,5 +6,5 @@ public class CoreConstant {
     public static String SUCCESS_MSG="success";
 
     public static int FAIL_CODE=200;
-    public static String FAIL_MSG="success";
+    public static String FAIL_MSG="fail";
 }

@@ -13,11 +13,12 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @Service
 public class MinioServiceImpl implements MinioService {
-    private MinioClient minioClient;
-    private MinioConfigProperties minioConfigProperties;
+    private final MinioClient minioClient;
+    private final MinioConfigProperties minioConfigProperties;
 
     public MinioServiceImpl(MinioClient minioClient, MinioConfigProperties minioConfigProperties) {
         this.minioClient = minioClient;
@@ -54,6 +55,16 @@ public class MinioServiceImpl implements MinioService {
                         .bucket(minioConfigProperties.getBucketName())
                         .object(fileName)
                         .filename(fileName)
+                .build());
+    }
+
+    @Override
+    public String getUrl(String fileName) throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs
+                .builder()
+                .bucket(minioConfigProperties.getBucketName())
+                .object(fileName)
+                .method(Method.GET)
                 .build());
     }
 }
